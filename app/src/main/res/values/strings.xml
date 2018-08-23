@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">PedidosDesafioDextra</string>
+
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancelar</string>
+
+
+</resources>
