@@ -1,59 +1,38 @@
 package com.desafio.dextra.sandwichlist.apagar;
 
-import android.arch.lifecycle.MutableLiveData;
-
 import com.desafio.dextra.remote.RetrofitSingleton;
 import com.desafio.dextra.sandwichlist.SandwishAPI;
+import com.desafio.dextra.sandwichlist.model.sandwich.Sandwich;
+import com.desafio.dextra.sandwichlist.model.sandwich.SandwichDto;
+import com.desafio.dextra.sandwichlist.model.sandwich.SandwichModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
-public class SandwichRemoteRepository  {
+public class SandwichRemoteRepository implements SandwichRepository {
 
-//    @Override
-//    public List<Sandwich> getSandwichs() {
-//        getSandwichsFromApi();
-//        return new ArrayList<>();
-//    }
-
-    public MutableLiveData<SandwichApiResponse> getSandwichsFromApi() {
-        MutableLiveData<SandwichApiResponse> sandwichsLiveData = new MutableLiveData<>();
-
+    @Override
+    public Single<List<Sandwich>> getSandwichs() {
         Retrofit retrofit = RetrofitSingleton.getInstance();
         SandwishAPI sandwishAPI = retrofit.create(SandwishAPI.class);
 
-//        sandwishAPI.getSandwichs().enqueue(new Callback<List<SandwichDto>>() {
-//            @Override
-//            public void onResponse(@NonNull Call<List<SandwichDto>> call, @NonNull Response<List<SandwichDto>> response) {
-//                Log.i(getClass().getSimpleName(), "Sucesso!");
-//                sandwichsLiveData.setValue(new SandwichApiResponse(response.body()));
-//            }
-//
-//            @Override
-//            public void onFailure(@NonNull Call<List<SandwichDto>> call, @NonNull Throwable t) {
-//                Log.e(getClass().getSimpleName(), t.getMessage());
-//                sandwichsLiveData.setValue(new SandwichApiResponse(t));
-//            }
-//        });
-
-        return sandwichsLiveData;
+        return sandwishAPI.getSandwichsList()
+                .subscribeOn(Schedulers.io())
+                .map(this::convertModels)
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
-//    private List<SandwichDto> getSandwichs(){
-//
-//        Retrofit retrofit = RetrofitSingleton.getInstance();
-//        SandwishAPI sandwishAPI = retrofit.create(SandwishAPI.class);
-//
-//        sandwishAPI.getSandwichs().enqueue(new Callback<List<SandwichDto>>() {
-//            @Override
-//            public void onResponse(@NonNull Call<List<SandwichDto>> call, @NonNull Response<List<SandwichDto>> response) {
-//                sandwichsLiveData.setValue(response.body());
-//            }
-//
-//            @Override
-//            public void onFailure(@NonNull Call<List<SandwichDto>> call, Throwable t) {
-//
-//            }
-//        });
-//        return data;
-//    }
+    private List<Sandwich> convertModels(List<SandwichDto> sandwichDtos) {
+        List<Sandwich> sandwiches = new ArrayList<>();
+        for (SandwichDto dto : sandwichDtos) {
+            sandwiches.add(SandwichModel.valueOf(dto));
+        }
+        return sandwiches;
+    }
+
 }

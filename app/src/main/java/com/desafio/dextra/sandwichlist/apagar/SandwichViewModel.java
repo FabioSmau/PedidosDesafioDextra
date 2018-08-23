@@ -1,54 +1,68 @@
 package com.desafio.dextra.sandwichlist.apagar;
 
-import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.databinding.ObservableBoolean;
+
+import com.desafio.dextra.remote.DisposableManager;
+import com.desafio.dextra.sandwichlist.model.sandwich.Sandwich;
+
+import java.util.List;
+
+import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 
 public class SandwichViewModel extends ViewModel {
 
+    private MutableLiveData<List<Sandwich>> sandwichesLiveData = new MutableLiveData<>();
+    private MutableLiveData<Boolean> loadingState = new MutableLiveData<>();
+    private MutableLiveData<Throwable> errorState = new MutableLiveData<>();
+
+    private SandwichRepository repository = new SandwichRemoteRepository();
+
+    public SandwichViewModel() {
+        this.loadingState.setValue(false);
+        this.errorState.setValue(null);
+    }
+
+    public MutableLiveData<List<Sandwich>> getSandwichesLiveData() {
+        return sandwichesLiveData;
+    }
+
+    public void start() {
+        getSandwiches();
+    }
+
+    public void getSandwiches() {
+        if (sandwichesLiveData.getValue() == null) {
+            Single<List<Sandwich>> single = repository.getSandwichs();
+
+            Disposable disposable = single
+                    .doOnSubscribe(disposable1 -> loadingState.setValue(true))
+                    .doOnSubscribe(disposable12 -> errorState.setValue(null))
+                    .doAfterTerminate(() -> loadingState.setValue(false))
+                    .subscribe(
+                            sandwichesLiveData::setValue,
+                            errorState::setValue
+                    );
+            DisposableManager.add(disposable);
+        }
+    }
 
 
-    private SandwichRemoteRepository repository = new SandwichRemoteRepository();
-    private MediatorLiveData<SandwichApiResponse> mediatorSandwich = new MediatorLiveData<>();
-//    private MediatorLiveData<SandwichApiResponse> mediatorSandwich = new MediatorLiveData<>();
+    public MutableLiveData<Boolean> getLoadingState() {
+        return loadingState;
+    }
 
+    public MutableLiveData<Throwable> getErrorState() {
+        return errorState;
+    }
 
-
-
-    private MutableLiveData<Throwable> error = new MutableLiveData<>();
-
-
-//    public MutableLiveData<List<Sandwich>> getSandwichs() {
-//        if (sandwichs == null) {
-//            sandwichs = new MutableLiveData<>();
-//            sandwichs.setValue(getData().getValue());
-//        }
-//        return sandwichs;
-//    }
-
-
-
-
-//    public LiveData<List<Sandwich>> getData() {
-//        mediatorSandwich.addSource(repository.getSandwichsFromApi(), new Observer<SandwichApiResponse>() {
-//            @Override
-//            public void onChanged(@Nullable SandwichApiResponse sandwichApiResponse) {
-//
-//            }
-//        }
-//    });
-//        return mediatorSandwich;
-//    }
-
-//    private void setupTimerTeste(){
-//        Timer time = new Timer();
-//        time.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                sandwichs.
-//            }
-//        },5000);
-//    }
-
-
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        DisposableManager.dispose();
+    }
 }

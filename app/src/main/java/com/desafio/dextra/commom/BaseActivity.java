@@ -29,12 +29,15 @@ public class BaseActivity extends AppCompatActivity implements LoadableView, Ale
 
     @Override
     public void showLoading() {
-        runOnUiThread(() -> loadableView.showLoading());
+//        runOnUiThread(() -> loadableView.showLoading());
+
+        loadableView.showLoading();
     }
 
     @Override
     public void hideLoading() {
-        runOnUiThread(() -> loadableView.hideLoading());
+        loadableView.hideLoading();
+//        runOnUiThread(() -> loadableView.hideLoading());
     }
 
     public void initToolbar(){

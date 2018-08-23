@@ -11,7 +11,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.desafio.dextra"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -36,6 +36,7 @@ android {
         development {
             buildConfigField "String", "URL_WEBSERVICE", '"http://192.168.0.103:8080/"'
             dimension "pedidos"
+            minSdkVersion 21 //flavor para testes
         }
 
         production {
