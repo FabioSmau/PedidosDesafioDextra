@@ -1,8 +1,5 @@
 package com.desafio.dextra.sandwichlist.recyclerview;
 
-
-//Uma tela com a lista dos lanches, com foto, nome, preço e ingredientes
-
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;

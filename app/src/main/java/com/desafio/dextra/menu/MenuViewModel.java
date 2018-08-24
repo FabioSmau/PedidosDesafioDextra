@@ -6,15 +6,23 @@ import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
 import com.desafio.dextra.R;
+import com.desafio.dextra.commom.SingleLiveEvent;
+import com.desafio.dextra.promotion.PromotionListFragment;
 import com.desafio.dextra.sandwichlist.SandwichListFragment;
 
 public class MenuViewModel extends ViewModel {
+
+    private SingleLiveEvent<Fragment> fragmentLiveData = new SingleLiveEvent<>();
 
     public MutableLiveData<Fragment> getFragmentLiveData() {
         return fragmentLiveData;
     }
 
-    private MutableLiveData<Fragment> fragmentLiveData = new MutableLiveData<>();
+    public void start(){
+        if (fragmentLiveData.getValue() == null){
+            fragmentLiveData.setValue(new SandwichListFragment());
+        }
+    }
 
     public boolean onItemSelected(MenuItem menu) {
         switch (menu.getItemId()) {
@@ -22,10 +30,12 @@ public class MenuViewModel extends ViewModel {
                 fragmentLiveData.setValue(new SandwichListFragment());
                 return true;
             case R.id.tab_promotions:
+                fragmentLiveData.setValue(new PromotionListFragment());
                 return true;
             default:
                 return false;
         }
     }
+
 
 }

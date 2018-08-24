@@ -7,6 +7,16 @@ public class IngredientEmpty implements Ingredient {
     }
 
     @Override
+    public int getAmount() {
+        return 0;
+    }
+
+    @Override
+    public void addAmount() {
+
+    }
+
+    @Override
     public String getName() {
         return "";
     }

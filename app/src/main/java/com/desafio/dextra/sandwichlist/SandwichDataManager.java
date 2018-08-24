@@ -14,6 +14,7 @@ public class SandwichDataManager {
 
     public void initUpdater(List<Sandwich> sandwiches) {
         for (Sandwich sandwich : sandwiches) {
+            sandwich.clearAllIngredients();
             sandwichesMap.put(sandwich, SandwichDescription.valueOf(sandwich));
         }
     }
@@ -24,11 +25,16 @@ public class SandwichDataManager {
 
     public void updateSandwich(Sandwich sandwich, List<Ingredient> ingredient) {
         if (sandwichesMap.containsKey(sandwich)) {
-            SandwichDescription description = sandwichesMap.get(sandwich);
-            sandwich.setIngredients(ingredient);
-            description.setPrice(sandwich.getPriceWithPromotionFormatted());
-            description.setIngredients(sandwich.getIngredientsName());
+            sandwich.addIngredients(ingredient);
+            updateSandwichDescription(sandwich);
         }
+    }
+
+
+    private void updateSandwichDescription(Sandwich sandwich) {
+        SandwichDescription description = sandwichesMap.get(sandwich);
+        description.setPrice(sandwich.getPriceWithPromotionFormatted());
+        description.setIngredients(sandwich.getIngredientsName());
     }
 
 }

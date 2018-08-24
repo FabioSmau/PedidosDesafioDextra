@@ -11,9 +11,10 @@ public interface Sandwich {
     String getName();
     List<Ingredient> getIngredients();
     List<String> getIngredientsName();
-    List<Integer> getIngredientsIdentifiers();
+    void clearAllIngredients();
     String getImageUrl();
-    void setIngredients(List<Ingredient> ingredients);
+    void addIngredients(List<Ingredient> ingredients);
+    void addIngredient(Ingredient ingredient);
     String getPriceWithPromotionFormatted();
     double getTotalPriceWithPromotion();
     double getTotalPriceWithoutPromotion();

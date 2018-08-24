@@ -1,15 +1,10 @@
 package com.desafio.dextra.menu;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 
 import com.desafio.dextra.R;
 import com.desafio.dextra.commom.ActivityUtils;
@@ -29,6 +24,8 @@ public class MenuActivity extends AppCompatActivity {
 
         setupFragmentSelected();
         setupBottomBar();
+
+        viewModel.start();
     }
 
     private void setupBottomBar() {

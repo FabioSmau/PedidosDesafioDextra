@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
-            name="sandwichDescription"
-            type="com.desafio.dextra.sandwichlist.recyclerview.SandwichDescription" />
+            name="promotionDescription"
+            type="com.desafio.dextra.promotion.recycler.PromotionDescriptor" />
     </data>
 
     <android.support.design.card.MaterialCardView
@@ -18,44 +19,28 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="21dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="16dp">
 
-            <ImageView
-                android:layout_weight="0"
-                android:id="@+id/imagePhoto"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:scaleType="centerInside"
-                android:padding="8dp"
-                android:layout_gravity="center"
-                android:src="@{sandwichDescription.urlImage}"
-                tools:src="@drawable/ic_launcher_background" />
 
             <LinearLayout
-                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:orientation="vertical">
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="4dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@{promotionDescription.name}"
                     android:textSize="18sp"
-                    android:text="@{sandwichDescription.name}"
                     tools:text="Teste" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{sandwichDescription.price}"
-                    tools:text="Teste" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{sandwichDescription.ingredients}"
+                    android:text="@{promotionDescription.description}"
                     tools:text="Teste" />
 
 

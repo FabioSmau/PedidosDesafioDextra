@@ -34,7 +34,8 @@ android {
 
     productFlavors {
         development {
-            buildConfigField "String", "URL_WEBSERVICE", '"http://192.168.0.103:8080/"'
+//            buildConfigField "String", "URL_WEBSERVICE", '"http://192.168.0.103:8080/"'
+            buildConfigField "String", "URL_WEBSERVICE", '"http://192.168.0.102:8080/"'
             dimension "pedidos"
             minSdkVersion 21 //flavor para testes
         }

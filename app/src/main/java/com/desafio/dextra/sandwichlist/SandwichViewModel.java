@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.desafio.dextra.commom.SingleLiveEvent;
+import com.desafio.dextra.commom.base.viewmodel.BaseServiceViewModel;
 import com.desafio.dextra.data.DisposableManager;
 import com.desafio.dextra.data.model.ingredient.Ingredient;
 import com.desafio.dextra.data.model.sandwich.Sandwich;
@@ -14,19 +15,11 @@ import java.util.List;
 import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 
-public class SandwichViewModel extends ViewModel {
+public class SandwichViewModel extends BaseServiceViewModel {
 
-    private SingleLiveEvent<Boolean> loadingState = new SingleLiveEvent<>();
-    private SingleLiveEvent<Throwable> errorState = new SingleLiveEvent<>();
     private MutableLiveData<List<SandwichDescription>> sandwichesDescriptorLiveData = new MutableLiveData<>();
-
     private SandwichDataManager updater = new SandwichDataManager();
-    private SandwichRepository repository = new SandwichRemoteRepository();
-
-//    public SandwichViewModel() {
-//        this.loadingState.setValue(false);
-//        this.errorState.setValue(null);
-//    }
+    private SandwichRepository repository = new SandwichCacheRepository();
 
     public MutableLiveData<List<SandwichDescription>> getSandwichesDescriptorLiveData() {
         return sandwichesDescriptorLiveData;
@@ -37,7 +30,7 @@ public class SandwichViewModel extends ViewModel {
     }
 
     private void getSandwiches() {
-        if (sandwichesDescriptorLiveData.getValue() == null) {
+//        if (sandwichesDescriptorLiveData.getValue() == null) {
             Single<List<Sandwich>> single = repository.getSandwichs();
 
             Disposable disposable = single
@@ -51,7 +44,7 @@ public class SandwichViewModel extends ViewModel {
 
                     );
             DisposableManager.add(disposable);
-        }
+//        }
     }
 
     private void getIngredients(List<Sandwich> sandwiches) {
@@ -65,41 +58,15 @@ public class SandwichViewModel extends ViewModel {
 
         Disposable disposable = single
                 .doOnSubscribe(disposable12 -> hideDialogError())
-                .subscribe(
-                        ingredients -> updater.updateSandwich(sandwich, ingredients)
-                );
+                .subscribe(ingredients -> updater.updateSandwich(sandwich, ingredients));
+
         DisposableManager.add(disposable);
-    }
-
-
-    public SingleLiveEvent<Boolean> getLoadingState() {
-        return loadingState;
-    }
-
-    public SingleLiveEvent<Throwable> getErrorState() {
-        return errorState;
     }
 
     @Override
     protected void onCleared() {
         super.onCleared();
         DisposableManager.dispose();
-    }
-
-    private void showProgress() {
-        loadingState.setValue(true);
-    }
-
-    private void hideProgress() {
-        loadingState.setValue(false);
-    }
-
-    private void showDialogError(Throwable error) {
-        errorState.setValue(error);
-    }
-
-    private void hideDialogError() {
-        errorState.setValue(null);
     }
 
     private void onReceiveSandwiches(List<Sandwich> sandwiches) {

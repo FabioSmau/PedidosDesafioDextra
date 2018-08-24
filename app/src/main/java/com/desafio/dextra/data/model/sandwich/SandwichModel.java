@@ -1,5 +1,7 @@
 package com.desafio.dextra.data.model.sandwich;
 
+import android.annotation.SuppressLint;
+
 import com.desafio.dextra.data.model.ingredient.Ingredient;
 import com.desafio.dextra.data.model.ingredient.IngredientsPromotionEnum;
 import com.desafio.dextra.data.model.promotions.DiscountPromotionChain;
@@ -8,6 +10,7 @@ import com.desafio.dextra.data.model.promotions.LotOfPromotion;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -15,18 +18,18 @@ public class SandwichModel implements Sandwich {
 
     private int id;
     private String name;
-    private List<Integer> ingredientsIdentifiers;
-    private List<Ingredient> ingredients;
     private String image;
 
+    @SuppressLint("UseSparseArrays")
+    private HashMap<Integer, Ingredient> ingredients = new HashMap<>();
 
-    private SandwichModel(int id, String name, List<Integer> ingredientsIdentifiers, List<Ingredient> ingredients, String image) {
+
+    public SandwichModel(int id, String name, String image) {
         this.id = id;
         this.name = name;
-        this.ingredientsIdentifiers = ingredientsIdentifiers;
-        this.ingredients = ingredients;
         this.image = image;
     }
+
 
     @Override
     public int getId() {
@@ -40,21 +43,21 @@ public class SandwichModel implements Sandwich {
 
     @Override
     public List<Ingredient> getIngredients() {
-        return ingredients;
+        return new ArrayList<>(ingredients.values());
     }
 
     @Override
     public List<String> getIngredientsName() {
         List<String> names = new ArrayList<>();
-        for (Ingredient ingredient : ingredients) {
+        for (Ingredient ingredient : getIngredients()) {
             names.add(ingredient.getName());
         }
         return names;
     }
 
     @Override
-    public List<Integer> getIngredientsIdentifiers() {
-        return ingredientsIdentifiers;
+    public void clearAllIngredients() {
+        this.ingredients.clear();
     }
 
     @Override
@@ -63,9 +66,22 @@ public class SandwichModel implements Sandwich {
     }
 
     @Override
-    public void setIngredients(List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
+    public void addIngredients(List<Ingredient> ingredients) {
+        for (Ingredient ingredient : ingredients) {
+            addIngredient(ingredient);
+        }
     }
+
+    @Override
+    public void addIngredient(Ingredient ingredient) {
+        if (ingredients.containsKey(ingredient.getId())) {
+            Ingredient ingredientFromHash = ingredients.get(ingredient.getId());
+            ingredientFromHash.addAmount();
+        } else {
+            ingredients.put(ingredient.getId(), ingredient);
+        }
+    }
+
 
     @Override
     public String getPriceWithPromotionFormatted() {
@@ -83,7 +99,7 @@ public class SandwichModel implements Sandwich {
     @Override
     public double getTotalPriceWithoutPromotion() {
         double priceWithoutPromotions = 0;
-        for (Ingredient ingredient : ingredients) {
+        for (Ingredient ingredient : getIngredients()) {
             priceWithoutPromotions += ingredient.getPrice();
         }
         return priceWithoutPromotions;
@@ -104,8 +120,6 @@ public class SandwichModel implements Sandwich {
         return new SandwichModel(
                 sandwichDto.getId(),
                 sandwichDto.getName(),
-                sandwichDto.getIngredients(),
-                new ArrayList<>(),
                 sandwichDto.getImage()
         );
     }
