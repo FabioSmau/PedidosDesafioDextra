@@ -1,53 +1,41 @@
 package com.desafio.dextra.sandwichlist;
 
-import com.desafio.dextra.remote.DisposableManager;
-import com.desafio.dextra.remote.RetrofitSingleton;
+import com.desafio.dextra.data.remote.RetrofitSingleton;
+import com.desafio.dextra.data.model.ingredient.Ingredient;
+import com.desafio.dextra.data.model.ingredient.IngredientsConverter;
+import com.desafio.dextra.data.model.sandwich.SandwichConverter;
+import com.desafio.dextra.data.model.sandwich.Sandwich;
 
+import java.util.List;
+
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
 public class SandwichRemoteRepository implements SandwichRepository {
 
-    private SandwichListContract.InteractorOutput output;
-    private Retrofit retrofit = RetrofitSingleton.getInstance();
+    @Override
+    public Single<List<Sandwich>> getSandwichs() {
+        Retrofit retrofit = RetrofitSingleton.getInstance();
+        SandwishAPI sandwishAPI = retrofit.create(SandwishAPI.class);
 
-    public static SandwichRepository newInstanceWithOutput(SandwichListContract.InteractorOutput output) {
-        return new SandwichRemoteRepository(output);
+        return sandwishAPI.getSandwichsList()
+                .subscribeOn(Schedulers.io())
+                .map(sandwichDtos -> new SandwichConverter().convert(sandwichDtos))
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private SandwichRemoteRepository(SandwichListContract.InteractorOutput output) {
-        this.output = output;
-    }
 
     @Override
-    public void requestSandwichs() {
-        SandwishAPI api = retrofit.create(SandwishAPI.class);
+    public Single<List<Ingredient>> getIngredientsOfSandwich(Sandwich sandwich) {
+        Retrofit retrofit = RetrofitSingleton.getInstance();
+        SandwishAPI sandwishAPI = retrofit.create(SandwishAPI.class);
 
-        Disposable disposable = api.getSandwichs()
+        return sandwishAPI.getIngredientOfSandwich(sandwich.getId())
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        sandwichs -> output.onGetSandwichesWithSuccess(sandwichs),
-                        throwable -> output.onGetSandwichesWithError(throwable)
-                );
-
-        DisposableManager.add(disposable);
+                .map(ingredientDtos -> new IngredientsConverter().convert(ingredientDtos))
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
-    @Override
-    public void requestIngredients(int id) {
-        SandwishAPI api = retrofit.create(SandwishAPI.class);
-
-        Disposable disposable = api.getIngredientOfSandwich(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        ingredients -> output.onGetIngredientsWithSuccess(id, ingredients),
-                        throwable -> output.onGetSandwichesWithError(throwable)
-                );
-
-        DisposableManager.add(disposable);
-    }
 }

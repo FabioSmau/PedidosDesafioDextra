@@ -4,5 +4,8 @@
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Cancelar</string>
 
+    <string name="bottom_list_sandwiches">Lanches</string>
+    <string name="bottom_list_promotions">Promoções</string>
+
 
 </resources>
