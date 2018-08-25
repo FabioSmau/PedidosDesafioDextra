@@ -1,4 +1,4 @@
-package com.desafio.dextra.sandwichlist.recyclerview;
+package com.desafio.dextra.sandwich.recyclerview;
 
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;

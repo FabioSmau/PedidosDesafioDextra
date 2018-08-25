@@ -44,7 +44,7 @@ public class PromotionListFragment extends BaseServiceFragment {
     }
 
     private void setupPromotions() {
-        viewModel.getPromotionsDescriptorLiveData().observe(this, (promotion -> {
+        viewModel.listPromotions().observe(this, (promotion -> {
             if (promotion == null)
                 return;
 

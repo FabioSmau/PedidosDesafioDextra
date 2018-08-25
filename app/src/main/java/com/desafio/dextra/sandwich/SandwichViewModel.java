@@ -1,14 +1,14 @@
-package com.desafio.dextra.sandwichlist;
+package com.desafio.dextra.sandwich;
 
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
 
-import com.desafio.dextra.commom.SingleLiveEvent;
 import com.desafio.dextra.commom.base.viewmodel.BaseServiceViewModel;
 import com.desafio.dextra.data.DisposableManager;
 import com.desafio.dextra.data.model.ingredient.Ingredient;
 import com.desafio.dextra.data.model.sandwich.Sandwich;
-import com.desafio.dextra.sandwichlist.recyclerview.SandwichDescription;
+import com.desafio.dextra.ingredients.IngredientsCacheRepository;
+import com.desafio.dextra.ingredients.IngredientsRepository;
+import com.desafio.dextra.sandwich.recyclerview.SandwichDescription;
 
 import java.util.List;
 
@@ -19,32 +19,34 @@ public class SandwichViewModel extends BaseServiceViewModel {
 
     private MutableLiveData<List<SandwichDescription>> sandwichesDescriptorLiveData = new MutableLiveData<>();
     private SandwichDataManager updater = new SandwichDataManager();
-    private SandwichRepository repository = new SandwichCacheRepository();
 
-    public MutableLiveData<List<SandwichDescription>> getSandwichesDescriptorLiveData() {
-        return sandwichesDescriptorLiveData;
-    }
+    private SandwichRepository sandwichRepository = new SandwichCacheRepository();
+    private IngredientsRepository ingredientsRepository = new IngredientsCacheRepository();
+
 
     public void start() {
         getSandwiches();
     }
 
+    public MutableLiveData<List<SandwichDescription>> listSandwiches() {
+        return sandwichesDescriptorLiveData;
+    }
+
     private void getSandwiches() {
-//        if (sandwichesDescriptorLiveData.getValue() == null) {
-            Single<List<Sandwich>> single = repository.getSandwichs();
+        Single<List<Sandwich>> single = sandwichRepository.getSandwichs();
 
-            Disposable disposable = single
-                    .doOnSubscribe(disposable1 -> showProgress())
-                    .doOnSubscribe(disposable12 -> hideDialogError())
-                    .doAfterTerminate(this::hideProgress)
-                    .doAfterSuccess(this::getIngredients)
-                    .subscribe(
-                            this::onReceiveSandwiches,
-                            this::showDialogError
+        Disposable disposable = single
+                .doOnSubscribe(disposable1 -> showProgress())
+                .doOnSubscribe(disposable12 -> hideDialogError())
+                .doAfterTerminate(this::hideProgress)
+                .doAfterSuccess(this::getIngredients)
+                .subscribe(
+                        this::onReceiveSandwiches,
+                        this::showDialogError
 
-                    );
-            DisposableManager.add(disposable);
-//        }
+                );
+
+        DisposableManager.add(disposable);
     }
 
     private void getIngredients(List<Sandwich> sandwiches) {
@@ -54,7 +56,7 @@ public class SandwichViewModel extends BaseServiceViewModel {
     }
 
     private void getIngredientsOfSandwich(Sandwich sandwich) {
-        Single<List<Ingredient>> single = repository.getIngredientsOfSandwich(sandwich);
+        Single<List<Ingredient>> single = ingredientsRepository.getIngredientsOfSandwich(sandwich.getId());
 
         Disposable disposable = single
                 .doOnSubscribe(disposable12 -> hideDialogError())
@@ -73,6 +75,5 @@ public class SandwichViewModel extends BaseServiceViewModel {
         updater.initUpdater(sandwiches);
         sandwichesDescriptorLiveData.setValue(updater.getSandwichDescriptions());
     }
-
 
 }

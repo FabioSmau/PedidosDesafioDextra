@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="sandwichDescription"
-            type="com.desafio.dextra.sandwich.recyclerview.SandwichDescription" />
+            name="ingredientDescription"
+            type="com.desafio.dextra.ingredients.recyclerview.IngredientDescription" />
     </data>
 
     <android.support.design.card.MaterialCardView
@@ -21,16 +21,16 @@
             android:padding="21dp"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_weight="0"
-                android:id="@+id/imagePhoto"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:scaleType="centerInside"
-                android:padding="8dp"
-                android:layout_gravity="center"
-                android:src="@{sandwichDescription.urlImage}"
-                tools:src="@drawable/ic_launcher_background" />
+            <!--<ImageView-->
+                <!--android:layout_weight="0"-->
+                <!--android:id="@+id/imagePhoto"-->
+                <!--android:layout_width="72dp"-->
+                <!--android:layout_height="72dp"-->
+                <!--android:scaleType="centerInside"-->
+                <!--android:padding="8dp"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:src="@{ingredientDescription.urlImage}"-->
+                <!--tools:src="@drawable/ic_launcher_background" />-->
 
             <LinearLayout
                 android:layout_weight="1"
@@ -43,20 +43,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:text="@{sandwichDescription.name}"
+                    android:text="@{ingredientDescription.name}"
                     tools:text="Teste" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{sandwichDescription.price}"
+                    android:text="@{ingredientDescription.price}"
                     tools:text="Teste" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{sandwichDescription.ingredients}"
-                    tools:text="Teste" />
+                <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="@{ingredientDescription.ingredients}"-->
+                    <!--tools:text="Teste" />-->
 
 
             </LinearLayout>

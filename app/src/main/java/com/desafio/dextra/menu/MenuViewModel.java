@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import com.desafio.dextra.R;
 import com.desafio.dextra.commom.SingleLiveEvent;
 import com.desafio.dextra.promotion.PromotionListFragment;
-import com.desafio.dextra.sandwichlist.SandwichListFragment;
+import com.desafio.dextra.sandwich.SandwichListFragment;
 
 public class MenuViewModel extends ViewModel {
 

@@ -37,9 +37,8 @@ public class MenuActivity extends AppCompatActivity {
             if (fragment == null)
                 return;
 
-            ActivityUtils.replaceFragmentInActivity(getSupportFragmentManager(), fragment, R.id.frameContainer);
+            ActivityUtils.replaceFragmentClearInActivity(getSupportFragmentManager(), fragment, R.id.frameContainer);
         });
     }
-
 
 }

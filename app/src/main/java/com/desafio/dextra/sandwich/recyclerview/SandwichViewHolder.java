@@ -1,4 +1,4 @@
-package com.desafio.dextra.sandwichlist.recyclerview;
+package com.desafio.dextra.sandwich.recyclerview;
 
 import android.support.v7.widget.RecyclerView;
 import com.desafio.dextra.commom.listeners.OnItemClickListener;

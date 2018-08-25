@@ -1,4 +1,4 @@
-package com.desafio.dextra.sandwichlist.recyclerview;
+package com.desafio.dextra.sandwich.recyclerview;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
@@ -14,6 +14,7 @@ import java.util.List;
 
 public class SandwichDescription extends BaseObservable {
 
+    private int id;
     private String name;
     private String price;
     private String ingredients;
@@ -37,6 +38,14 @@ public class SandwichDescription extends BaseObservable {
     @Bindable
     public String getUrlImage() {
         return urlImage;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setName(String name) {
@@ -70,6 +79,9 @@ public class SandwichDescription extends BaseObservable {
         SandwichDescription descriptor = new SandwichDescription();
         descriptor.setName(sandwich.getName());
         descriptor.setUrlImage(sandwich.getImageUrl());
+        descriptor.setId(sandwich.getId());
+        descriptor.setIngredients(sandwich.getIngredientsName());
+        descriptor.setPrice(sandwich.getPriceWithPromotionFormatted());
         return descriptor;
     }
 

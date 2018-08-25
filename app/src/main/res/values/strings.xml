@@ -7,5 +7,9 @@
     <string name="bottom_list_sandwiches">Lanches</string>
     <string name="bottom_list_promotions">Promoções</string>
 
+    <string name="order_button_custom">Costumizar</string>
+    <string name="order_button_finish">Finalizar Pedido</string>
+
+
 
 </resources>

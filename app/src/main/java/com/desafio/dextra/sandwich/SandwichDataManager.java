@@ -1,8 +1,8 @@
-package com.desafio.dextra.sandwichlist;
+package com.desafio.dextra.sandwich;
 
 import com.desafio.dextra.data.model.ingredient.Ingredient;
 import com.desafio.dextra.data.model.sandwich.Sandwich;
-import com.desafio.dextra.sandwichlist.recyclerview.SandwichDescription;
+import com.desafio.dextra.sandwich.recyclerview.SandwichDescription;
 
 import java.util.ArrayList;
 import java.util.HashMap;

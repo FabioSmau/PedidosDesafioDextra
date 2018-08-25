@@ -18,7 +18,7 @@ public class PromotionViewModel extends BaseServiceViewModel {
     private MutableLiveData<List<PromotionDescriptor>> promotionsDescriptorLiveData = new MutableLiveData<>();
     private PromotionRepository repository = new PromotionCacheRepository();
 
-    public MutableLiveData<List<PromotionDescriptor>> getPromotionsDescriptorLiveData() {
+    public MutableLiveData<List<PromotionDescriptor>> listPromotions() {
         return promotionsDescriptorLiveData;
     }
 
@@ -27,21 +27,20 @@ public class PromotionViewModel extends BaseServiceViewModel {
     }
 
     private void loadAllPromotions() {
-//        if (promotionsDescriptorLiveData.getValue() == null) {
-            Single<List<Promotion>> single = repository.getPromotions();
+        Single<List<Promotion>> single = repository.getPromotions();
 
-            Disposable disposable = single
-                    .doOnSubscribe(disposable1 -> showProgress())
-                    .doOnSubscribe(disposable12 -> hideDialogError())
-                    .doAfterTerminate(this::hideProgress)
-                    .map(promotions -> new PromotionConverter().convertPromotionsDescriptor(promotions))
-                    .subscribe(
-                            this::onReceivePromotions,
-                            this::showDialogError
+        Disposable disposable = single
+                .doOnSubscribe(disposable1 -> showProgress())
+                .doOnSubscribe(disposable12 -> hideDialogError())
+                .doAfterTerminate(this::hideProgress)
+                .map(promotions -> new PromotionConverter().convertPromotionsDescriptor(promotions))
+                .subscribe(
+                        this::onReceivePromotions,
+                        this::showDialogError
 
-                    );
-            DisposableManager.add(disposable);
-//        }
+                );
+
+        DisposableManager.add(disposable);
     }
 
     @Override

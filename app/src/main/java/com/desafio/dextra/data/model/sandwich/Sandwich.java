@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface Sandwich {
 
+    String KEY_EXTRA = "SANDWICH_KEY_EXTRA";
+
     int getId();
     String getName();
     List<Ingredient> getIngredients();

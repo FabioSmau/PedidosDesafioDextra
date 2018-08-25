@@ -21,8 +21,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-import static android.support.v4.util.Preconditions.checkNotNull;
-
 
 /**
  * This provides methods to help Activities load their UI.
@@ -36,6 +34,7 @@ public class ActivityUtils {
     public static void replaceFragmentInActivity(@NonNull FragmentManager fragmentManager,
                                                  @NonNull Fragment fragment, int frameId) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.addToBackStack(fragment.getClass().getSimpleName());
         transaction.replace(frameId, fragment);
         transaction.commit();
     }
@@ -44,8 +43,21 @@ public class ActivityUtils {
      * The {@code fragment} is added to the container view with id {@code frameId}. The operation is
      * performed by the {@code fragmentManager}.
      */
+    public static void replaceFragmentClearInActivity(@NonNull FragmentManager fragmentManager,
+                                                      @NonNull Fragment fragment, int frameId) {
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(frameId, fragment);
+        transaction.commit();
+    }
+
+
+    /**
+     * The {@code fragment} is added to the container view with id {@code frameId}. The operation is
+     * performed by the {@code fragmentManager}.
+     */
     public static void addFragmentInActivity(@NonNull FragmentManager fragmentManager,
-                                                 @NonNull Fragment fragment, String tag) {
+                                             @NonNull Fragment fragment, String tag) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(fragment, tag);
         transaction.commit();

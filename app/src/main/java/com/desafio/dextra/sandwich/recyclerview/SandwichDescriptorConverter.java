@@ -1,4 +1,4 @@
-package com.desafio.dextra.sandwichlist.recyclerview;
+package com.desafio.dextra.sandwich.recyclerview;
 
 import com.desafio.dextra.data.model.sandwich.Sandwich;
 
