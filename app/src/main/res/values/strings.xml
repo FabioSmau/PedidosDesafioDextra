@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">PedidosDesafioDextra</string>
 
+    <string name="activity_ingredients_list">Escolha um adicional</string>
+    <string name="activity_menu">Pedidos Desafio</string>
+
+
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Cancelar</string>
 
@@ -9,6 +13,8 @@
 
     <string name="order_button_custom">Costumizar</string>
     <string name="order_button_finish">Finalizar Pedido</string>
+
+    <string name="ingredients_list_confirm">Confirmar</string>
 
 
 

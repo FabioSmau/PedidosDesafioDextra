@@ -1,8 +1,6 @@
-package com.desafio.dextra.data.model.promotions;
+package com.desafio.dextra.data.model.promotions.chain;
 
-import com.desafio.dextra.data.model.ingredient.Ingredient;
-
-import java.util.List;
+import com.desafio.dextra.data.model.sandwich.Sandwich;
 
 public class DiscountPromotionChain implements PricePromotionChain {
 
@@ -14,9 +12,9 @@ public class DiscountPromotionChain implements PricePromotionChain {
     }
 
     @Override
-    public double getPriceWithDiscount(double priceDefault, List<Ingredient> ingredients) {
+    public double getPriceWithDiscount(double priceDefault, Sandwich sandwich) {
         if (next != null){
-            next.getPriceWithDiscount(priceDefault, ingredients);
+            next.getPriceWithDiscount(priceDefault, sandwich);
         }
         return priceDefault;
     }

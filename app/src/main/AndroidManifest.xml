@@ -14,16 +14,23 @@
 
         <activity android:name=".MainActivity" />
 
-        <activity android:name=".commom.base.BaseActivity" />
+        <activity android:name=".commom.base.BaseServiceActivity" />
 
-        <activity android:name=".menu.MenuActivity">
+        <activity
+            android:name=".menu.MenuActivity"
+            android:label="@string/activity_menu">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ingredients.IngredientsActivity" />
+
+
+        <activity
+            android:name=".ingredients.IngredientsListActivity"
+            android:label="@string/activity_ingredients_list" />
 
     </application>
 

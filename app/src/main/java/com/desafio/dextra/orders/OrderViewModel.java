@@ -34,28 +34,40 @@ public class OrderViewModel extends BaseServiceViewModel {
 
     private void getSanchwichAndIngredients(int idSandwich) {
 
-        Single<Sandwich> singleSandwich = sandwichRepository.getSandiwich(idSandwich);
-        Single<List<Ingredient>> singleIngredients = ingredientsRepository.getIngredientsOfSandwich(idSandwich);
+        if (sandwichMutableLiveData.getValue() == null) {
+            Single<Sandwich> singleSandwich = sandwichRepository.getSandiwich(idSandwich);
+            Single<List<Ingredient>> singleIngredients = ingredientsRepository.getIngredientsOfSandwich(idSandwich);
 
-        Disposable disposable = singleSandwich
-                .doOnSubscribe(disposable1 -> showProgress())
-                .doOnSubscribe(disposable12 -> hideDialogError())
-                .doAfterTerminate(this::hideProgress)
-                .zipWith(singleIngredients, (sandwich, ingredients) -> {
-                    sandwich.clearAllIngredients();
-                    sandwich.addIngredients(ingredients);
-                    return sandwich;
-                })
-                .subscribe(
-                        this::onReceiveSandwich,
-                        this::showDialogError
-                );
+            Disposable disposable = singleSandwich
+                    .doOnSubscribe(disposable1 -> showProgress())
+                    .doOnSubscribe(disposable12 -> hideDialogError())
+                    .doAfterTerminate(this::hideProgress)
+                    .zipWith(singleIngredients, (sandwich, ingredients) -> {
+                        sandwich.clearAllIngredients();
+                        sandwich.addIngredients(ingredients);
+                        return sandwich;
+                    })
+                    .subscribe(
+                            this::onReceiveSandwich,
+                            this::showDialogError
+                    );
 
-        DisposableManager.add(disposable);
+            DisposableManager.add(disposable);
+        }
 
     }
 
     private void onReceiveSandwich(Sandwich sandwich) {
         sandwichMutableLiveData.setValue(sandwich);
     }
+
+    public void updateIngredientsExtras(List<Ingredient> extras) {
+        if (sandwichMutableLiveData.getValue() != null) {
+            Sandwich sandwich = sandwichMutableLiveData.getValue();
+            sandwich.addIngredients(extras);
+
+            sandwichMutableLiveData.setValue(sandwich);
+        }
+    }
+
 }

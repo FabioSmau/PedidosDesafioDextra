@@ -23,9 +23,9 @@ public class SandwichDataManager {
         return new ArrayList<>(sandwichesMap.values());
     }
 
-    public void updateSandwich(Sandwich sandwich, List<Ingredient> ingredient) {
+    public void updateSandwich(Sandwich sandwich, List<Ingredient> ingredients) {
         if (sandwichesMap.containsKey(sandwich)) {
-            sandwich.addIngredients(ingredient);
+            sandwich.addIngredients(ingredients);
             updateSandwichDescription(sandwich);
         }
     }

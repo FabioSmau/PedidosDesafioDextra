@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="ingredientDescription"
             type="com.desafio.dextra.ingredients.recyclerview.IngredientDescription" />
@@ -13,37 +14,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        app:cardElevation="2dp">
+        app:cardElevation="2dp"
+        tools:style="@android:style/CardView">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="21dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="16dp">
 
-            <!--<ImageView-->
-                <!--android:layout_weight="0"-->
-                <!--android:id="@+id/imagePhoto"-->
-                <!--android:layout_width="72dp"-->
-                <!--android:layout_height="72dp"-->
-                <!--android:scaleType="centerInside"-->
-                <!--android:padding="8dp"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:src="@{ingredientDescription.urlImage}"-->
-                <!--tools:src="@drawable/ic_launcher_background" />-->
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_gravity="center"
+                android:layout_weight="0"
+                android:padding="8dp"
+                android:scaleType="centerInside"
+                android:src="@{ingredientDescription.urlImage}"
+                tools:src="@drawable/ic_launcher_background" />
 
             <LinearLayout
-                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:orientation="vertical">
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="4dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
                     android:text="@{ingredientDescription.name}"
+                    android:textSize="18sp"
                     tools:text="Teste" />
 
                 <TextView
@@ -52,14 +53,16 @@
                     android:text="@{ingredientDescription.price}"
                     tools:text="Teste" />
 
-                <!--<TextView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="@{ingredientDescription.ingredients}"-->
-                    <!--tools:text="Teste" />-->
-
 
             </LinearLayout>
+
+            <com.desafio.dextra.ingredients.IngredientStepperView
+                android:id="@+id/stepperView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:amount="@{ingredientDescription.amount}"
+                android:layout_gravity="center"
+                android:layout_weight="0" />
 
         </LinearLayout>
 

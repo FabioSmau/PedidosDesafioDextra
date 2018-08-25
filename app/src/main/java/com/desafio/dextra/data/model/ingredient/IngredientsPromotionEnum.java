@@ -21,4 +21,8 @@ public enum IngredientsPromotionEnum {
         }
         return UNKNOWN;
     }
+
+    public int getId() {
+        return id;
+    }
 }

@@ -6,6 +6,8 @@ import android.databinding.BindingAdapter;
 import android.widget.ImageView;
 
 import com.desafio.dextra.BR;
+import com.desafio.dextra.data.model.ingredient.Ingredient;
+import com.desafio.dextra.ingredients.IngredientStepperView;
 import com.squareup.picasso.Picasso;
 
 public class IngredientDescription extends BaseObservable {
@@ -17,11 +19,12 @@ public class IngredientDescription extends BaseObservable {
     private int amount;
 
     @Bindable
-    public String getAmount() {
-        return String.valueOf(amount);
+    public int getAmount() {
+        return amount;
     }
 
     public void setAmount(int amount) {
+        if (this.amount == amount) return;
         this.amount = amount;
         notifyPropertyChanged(BR.amount);
     }
@@ -61,13 +64,28 @@ public class IngredientDescription extends BaseObservable {
                 .into(view);
     }
 
+    @BindingAdapter("app:amount")
+    public static void setAmountInView(IngredientStepperView view, int amount) {
+        view.updateFieldValue(amount);
+    }
+
     @Bindable
-    public String getImageUrl() {
+    public String getUrlImage() {
         return urlImage;
     }
 
-    public void setImageUrl(String urlImage) {
+    public void setUrlImage(String urlImage) {
         this.urlImage = urlImage;
-        notifyPropertyChanged(BR.urlImage);
+        notifyPropertyChanged(BR.imageUrl);
+    }
+
+    public static IngredientDescription valueOf(Ingredient ingredient) {
+        IngredientDescription ingredientDescription = new IngredientDescription();
+        ingredientDescription.setAmount(ingredient.getAmount());
+        ingredientDescription.setId(ingredient.getId());
+        ingredientDescription.setName(ingredient.getName());
+        ingredientDescription.setUrlImage(ingredient.getImageUrl());
+        ingredientDescription.setPrice(ingredient.getPriceUnitFormatted());
+        return ingredientDescription;
     }
 }
